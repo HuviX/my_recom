@@ -1,0 +1,8 @@
+callable: ETL.preprocess.main
+kwargs:
+  input_data: /home/almokhov@ozon/recom/data/sessions.json
+  test_df_dir: /home/almokhov@ozon/recom/data/test_df.parquet
+  train_df_dir: /home/almokhov@ozon/recom/data/processed.parquet
+  sparse_matrices_dir: /home/almokhov@ozon/recom/sparse_data/
+  data_dir: /home/almokhov@ozon/recom/data/
+  w2vec_data_dir: /home/almokhov@ozon/recom/w2vec/train_df

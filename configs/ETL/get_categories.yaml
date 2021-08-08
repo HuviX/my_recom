@@ -1,0 +1,6 @@
+callable: ETL.get_categories.main
+kwargs:
+  data:
+    session_items_categories: /home/almokhov@ozon/recom/data/sess_item_categories.csv
+    mapping: /home/almokhov@ozon/recom/data/reverse_mapping.pkl
+    output: /home/almokhov@ozon/recom/data/categories.pkl

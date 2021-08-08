@@ -1,0 +1,5 @@
+w2vec/weights
+w2vec/train_df
+*egg*
+*pycache*
+data/

@@ -1,0 +1,13 @@
+callable: ETL.get_candidates.main
+kwargs:
+  train_path: /home/almokhov@ozon/recom/data/processed.parquet
+  test_path: /home/almokhov@ozon/recom/data/test_df.parquet
+  size_of_train: 1000
+  size_of_test: 100
+  model_paths:
+    cart_w2vec: /home/almokhov@ozon/recom/w2vec/weights/cart.model
+    view_w2vec: /home/almokhov@ozon/recom/w2vec/weights/view.model
+    cosine_folder: /home/almokhov@ozon/recom/sparse_data/
+    top50: /home/almokhov@ozon/recom/data/top50.pkl
+  top_n: 50
+  output_data: /home/almokhov@ozon/recom/data/candidates_df.pkl

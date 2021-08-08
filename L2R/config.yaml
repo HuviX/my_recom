@@ -1,0 +1,34 @@
+data_path: '../train_test.pkl'
+features:
+  - avg_w2vec 
+  - avg_cosine
+  - sum_w2vec
+  - sum_cosine
+  - len_of_w2vec
+  - len_of_cos
+  - len_of_pred
+  - mean_ovr
+  - sum_ovr
+  - intersection_w2vec
+  - intersection_cosine
+  - mean_score_for_prediction
+  - num_of_cart
+  - num_of_views
+  - is_popular
+  - pred_cart_sim
+  - pred_view_sim
+  - prob_cart
+  - prob_view
+  - max_cart_sim
+  - max_view_sim
+  - cat1_encoded_feature
+  - cat2_encoded_feature
+target: target
+query_id_col: q_id
+model_params:
+  learning_rate: 0.0001
+  batch_size: 64
+  epochs: 10
+  logdir: logdir/
+  layers: [64, 16] # [input_size, 64, 16]
+  save_dir: lambdarank_model/

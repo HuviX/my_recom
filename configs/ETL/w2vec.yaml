@@ -1,0 +1,8 @@
+callable: w2vec.train.main
+kwargs:
+  n_epochs: 50
+  min_count: 5
+  model_dir: /home/almokhov@ozon/recom/w2vec/weights
+  data:
+    cart: /home/almokhov@ozon/recom/w2vec/train_df/cart_df.pkl
+    views: /home/almokhov@ozon/recom/w2vec/train_df/view_df.pkl

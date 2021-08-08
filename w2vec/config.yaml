@@ -1,0 +1,7 @@
+# TODO: make absolute paths
+n_epochs: 50
+min_count: 5
+model_dir: weights
+data:
+  cart: train_df/cart_df.pkl 
+  views: train_df/view_df.pkl
