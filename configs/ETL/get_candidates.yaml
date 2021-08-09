@@ -2,8 +2,8 @@ callable: ETL.get_candidates.main
 kwargs:
   train_path: /home/huvi/recom/data/processed.parquet
   test_path: /home/huvi/recom/data/test_df.parquet
-  size_of_train: 25000
-  size_of_test: 2500
+  size_of_train: 40000
+  size_of_test: 5000
   model_paths:
     cart_w2vec: /home/huvi/recom/data/w2vec/weights/cart.model
     view_w2vec: /home/huvi/recom/data/w2vec/weights/view.model
