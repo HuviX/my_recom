@@ -1,8 +1,6 @@
-import argparse
 import pickle
 from typing import Dict
 
-import matplotlib.pyplot as plt
 from gensim.models import Word2Vec
 
 from w2vec.utils import callback

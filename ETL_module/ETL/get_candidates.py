@@ -6,17 +6,8 @@ import time
 import types
 from typing import Tuple, List, Callable, Dict
 
-import os
-os.environ["OMP_NUM_THREADS"] = "1" # export OMP_NUM_THREADS=1
-os.environ["OPENBLAS_NUM_THREADS"] = "1" # export OPENBLAS_NUM_THREADS=1
-os.environ["MKL_NUM_THREADS"] = "1" # export MKL_NUM_THREADS=1
-os.environ["VECLIB_MAXIMUM_THREADS"] = "1" # export VECLIB_MAXIMUM_THREADS=1
-os.environ["NUMEXPR_NUM_THREADS"] = "1"
-
 import numpy as np
 import pandas as pd
-import pickle
-from tqdm import tqdm
 
 from models_pack.models import CombinedProd2Vec, CosineModel, Top
 
@@ -64,7 +55,7 @@ def get_predictions(
     scoring_method: Callable,
     p2vec: CombinedProd2Vec,
     cosine_model: CosineModel,
-    task_cpus = 1,
+    task_cpus = 8,
 ) -> pd.DataFrame:
     df = np.array_split(df, task_cpus)
     LOCALS = {
@@ -78,8 +69,8 @@ def get_predictions(
         types.ModuleType("executor_pool_storage")
     sys.modules["executor_pool_storage"].__dict__.update(LOCALS)
 
-    # with multiprocessing.Pool(processes=task_cpus) as pool:
-    res = map(process_batch, range(1))
+    with multiprocessing.Pool(processes=task_cpus) as pool:
+        res = pool.map(process_batch, range(1))
     return pd.concat(res)
 
 

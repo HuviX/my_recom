@@ -151,7 +151,7 @@ def main(
             .groupby('session_id')['item_id'].agg(list)
         )
         processed_df[action_type] = action_column
-        if action_type in ["view", "order",]:
+        if action_type in ["view", "order", "to_cart"]:
             (
                 action_column
                 .map(lambda x: [str(i) for i in x])

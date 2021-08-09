@@ -1,6 +1,6 @@
 callable: L2R.train.main
 kwargs:
-  input_data: /home/almokhov@ozon/recom/data/features_df.pkl
+  input_data: /home/huvi/recom/data/features_df.pkl
   query_id_col: q_id
   target_col: target
   model_params:
@@ -9,7 +9,7 @@ kwargs:
     epochs: 10
     logdir: logdir/
     layers: [64, 16] # [input_size, 64, 16]
-    save_dir: /home/almokhov@ozon/recom/lambdarank/
+    save_dir: /home/huvi/recom/lambdarank/
   features_list:
     - avg_w2vec 
     - avg_cosine
