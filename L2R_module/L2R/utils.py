@@ -30,17 +30,17 @@ class Logger:
 
 
 class DCG:
-    def __init__(self, k=10, gain_type='exp2'):
+    def __init__(self, k=10, gain_type="exp2"):
         """
         :param k: int DCG@k
         :param gain_type: 'exp2' or 'identity'
         """
         self.k = k
         self.discount = self._make_discount(256)
-        if gain_type in ['exp2', 'identity']:
+        if gain_type in ["exp2", "identity"]:
             self.gain_type = gain_type
         else:
-            raise ValueError('gain type not equal to exp2 or identity')
+            raise ValueError("gain type not equal to exp2 or identity")
 
     def evaluate(self, targets):
         """
@@ -53,7 +53,7 @@ class DCG:
 
     def _get_gain(self, targets):
         t = targets[: self.k]
-        if self.gain_type == 'exp2':
+        if self.gain_type == "exp2":
             return np.power(2.0, t) - 1.0
         else:
             return t
@@ -71,7 +71,7 @@ class DCG:
 
 
 class NDCG(DCG):
-    def __init__(self, k=10, gain_type='exp2'):
+    def __init__(self, k=10, gain_type="exp2"):
         """
         :param k: int NDCG@k
         :param gain_type: 'exp2' or 'identity'
@@ -159,11 +159,11 @@ def eval_ndcg_at_k(model, loader, k: int, device):
     qids = np.hstack(qids)
     rels = np.hstack(rels)
     scores = np.hstack(scores)
-    result_df = pd.DataFrame({'qid': qids, 'rel': rels[0], 'score': scores})
+    result_df = pd.DataFrame({"qid": qids, "rel": rels[0], "score": scores})
     session_ndcgs = []
     for qid in result_df.qid.unique():
         result_qid = result_df[result_df.qid == qid].sort_values(
-            'score', ascending=False
+            "score", ascending=False
         )
         rel_rank = result_qid.rel.values
         if ndcg_metric.maxDCG(rel_rank) == 0:

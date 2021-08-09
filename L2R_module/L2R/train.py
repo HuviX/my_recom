@@ -40,9 +40,7 @@ def main(
     test = to_float32(test)
     train = to_float32(train)
 
-    train_dataset = QueryDS(
-        train, features_list, query_id_col, target_col
-    )
+    train_dataset = QueryDS(train, features_list, query_id_col, target_col)
     test_dataset = QueryDS(
         test, features_list, query_id_col, target_col, type="test"
     )
@@ -97,7 +95,7 @@ def main(
             optimizer,
             ideal_dcg,
             epoch,
-            scheduler # XXX: refactor this
+            scheduler,  # XXX: refactor this
         )
         validation_step(my_net, test_loader, writer, device, epoch)
         torch.save(my_net.state_dict(), f"{save_dir}/model_{epoch}.pth")

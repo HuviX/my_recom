@@ -14,7 +14,7 @@ class CustomPythonOperator(PythonOperator):
         op_kwargs: Optional[Dict] = None,
         templates_dict: Optional[Dict] = None,
         templates_exts: Optional[List[str]] = None,
-        **kwargs
+        **kwargs,
     ):
         self.templates_dict = templates_dict
         self.parse_config(config_path)

@@ -1,5 +1,6 @@
 from gensim.models.callbacks import CallbackAny2Vec
 
+
 class callback(CallbackAny2Vec):
     """
     Callback to print loss after each epoch

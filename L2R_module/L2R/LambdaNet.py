@@ -20,7 +20,10 @@ def init_weights(m):
 
 class LambdaRank(nn.Module):
     def __init__(
-        self, net_structures,  device, sigma=1.0,
+        self,
+        net_structures,
+        device,
+        sigma=1.0,
     ):
         """Fully Connected Layers with Sigmoid activation at the last layer
 
@@ -31,13 +34,13 @@ class LambdaRank(nn.Module):
         for i in range(len(net_structures) - 1):
             setattr(
                 self,
-                'fc' + str(i + 1),
+                "fc" + str(i + 1),
                 nn.Linear(net_structures[i], net_structures[i + 1]),
             )
-            setattr(self, 'act' + str(i + 1), nn.ReLU())
+            setattr(self, "act" + str(i + 1), nn.ReLU())
         setattr(
             self,
-            'fc' + str(len(net_structures)),
+            "fc" + str(len(net_structures)),
             nn.Linear(net_structures[-1], 1),
         )
         self.activation = nn.Sigmoid()
@@ -47,11 +50,11 @@ class LambdaRank(nn.Module):
     def forward(self, input1):
         # from 1 to N - 1 layer, use ReLU as activation function
         for i in range(1, self.fc_layers):
-            fc = getattr(self, 'fc' + str(i))
-            act = getattr(self, 'act' + str(i))
+            fc = getattr(self, "fc" + str(i))
+            act = getattr(self, "act" + str(i))
             input1 = act(fc(input1))
 
-        fc = getattr(self, 'fc' + str(self.fc_layers))
+        fc = getattr(self, "fc" + str(self.fc_layers))
         return self.activation(fc(input1)) * self.sigma
 
     def get_lambda(self, Y, y_pred, rank_order, N):
@@ -63,9 +66,7 @@ class LambdaRank(nn.Module):
         neg_pairs = (rel_diff < 0).type(torch.float32)
         Sij = pos_pairs - neg_pairs
         rank_order_tensor = (
-            torch.tensor(rank_order)
-            .to(self.device)
-            .reshape(-1, 1)
+            torch.tensor(rank_order).to(self.device).reshape(-1, 1)
         )
         decay_diff = 1.0 / torch.log2(
             rank_order_tensor + 1.0
@@ -79,7 +80,6 @@ class LambdaRank(nn.Module):
         )
         lambda_update = torch.sum(lambda_update, 1, keepdim=True)
         return lambda_update
-
 
     def train_step(
         self,
@@ -120,10 +120,8 @@ class LambdaRank(nn.Module):
 
         to_write = {
             "NDCG Train": eval_ndcg_at_k(model, loader, k, self.device),
-            "Loss Train": eval_cross_entropy_loss(
-                model, loader, self.device
-            ),
-            "MAP Train": eval_map(model, loader,  self.device),
+            "Loss Train": eval_cross_entropy_loss(model, loader, self.device),
+            "MAP Train": eval_map(model, loader, self.device),
         }
         writer.log(to_write)
         pbar.close()
@@ -138,8 +136,8 @@ def validation_step(
     k: int = 10,
 ):
     to_write = {
-        'NDCG Val': eval_ndcg_at_k(model, loader, k, device),
-        'Loss Val': eval_cross_entropy_loss(model, loader, device),
-        'MAP Val': eval_map(model, loader, device),
+        "NDCG Val": eval_ndcg_at_k(model, loader, k, device),
+        "Loss Val": eval_cross_entropy_loss(model, loader, device),
+        "MAP Val": eval_map(model, loader, device),
     }
     writer.log(to_write)

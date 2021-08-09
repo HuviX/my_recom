@@ -19,7 +19,10 @@ class CosineModel:
         self.similarities_cart_add = self.similarities_cart_add.tocsc()
 
     def _predict(
-        self, session: Dict[str, List[str]], topn: int, scoring_method: Callable
+        self,
+        session: Dict[str, List[str]],
+        topn: int,
+        scoring_method: Callable,
     ) -> Dict[str, float]:
 
         res_view = []
@@ -83,7 +86,10 @@ class Prod2Vec:
         return prediction
 
     def get_prediction_for_session(
-        self, session: Dict[str, List[str]], topn: int, scoring_method: Callable
+        self,
+        session: Dict[str, List[str]],
+        topn: int,
+        scoring_method: Callable,
     ) -> Dict[str, float]:
         # TODO: Refactor. Duplicate
         views = session["views"]
@@ -102,7 +108,10 @@ class CombinedProd2Vec(Prod2Vec):
         self._cart_model = Prod2Vec(paths[1])
 
     def get_prediction_for_session(
-        self, session: Dict[str, List[str]], topn: int, scoring_method: Callable
+        self,
+        session: Dict[str, List[str]],
+        topn: int,
+        scoring_method: Callable,
     ) -> Dict[str, float]:
         # TODO: Refactor. Duplicate
         views = session["views"]

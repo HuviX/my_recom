@@ -85,4 +85,3 @@ def main(
 
         model.save(f"{model_dir}/{model_name}.model")
     print("Done")
-    

@@ -3,10 +3,12 @@ from gensim.models.callbacks import CallbackAny2Vec
 from typing import Callable, Tuple, List, Any
 from collections import defaultdict
 
+
 class callback(CallbackAny2Vec):
     """
     Callback to print loss after each epoch
     """
+
     def __init__(self):
         self.epoch = 0
         self.loss_history = []
@@ -26,8 +28,7 @@ class callback(CallbackAny2Vec):
 
 
 def get_scores(scores: List[Tuple[Any]], scoring_method: Callable):
-    """
-    """
+    """ """
     scoring = dict()
     for item, score in scores:
         try:

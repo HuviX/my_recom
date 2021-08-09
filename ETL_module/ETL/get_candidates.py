@@ -21,7 +21,7 @@ def load_models(
     cart_w2vec: str,
     view_w2vec: str,
     top50: str,
-    cosine_folder: str = 'sparse_data/',
+    cosine_folder: str = "sparse_data/",
 ) -> Tuple[List[str], CombinedProd2Vec, CosineModel]:
     top50 = Top(top50)
     p2vec = CombinedProd2Vec([view_w2vec, cart_w2vec])
@@ -31,7 +31,7 @@ def load_models(
 
 def process_batch(k: int) -> pd.DataFrame:
     def paralled_prediction(row, scoring_method: Callable, n: int):
-        session = {'views': row[0], 'to_cart': row[1]}
+        session = {"views": row[0], "to_cart": row[1]}
         p2vec_pred = p2vec.get_prediction_for_session(
             session, n, scoring_method
         )
@@ -39,15 +39,20 @@ def process_batch(k: int) -> pd.DataFrame:
         return pd.Series([p2vec_pred, cos_pred])
 
     from executor_pool_storage import (
-        data, n, scoring_method, p2vec, cosine_model
+        data,
+        n,
+        scoring_method,
+        p2vec,
+        cosine_model,
     )
+
     df = data[k]
 
-    df[['w2vec_pred', 'cos_pred']] = (
-        df[['view','to_cart']]
-        .apply(lambda x: paralled_prediction(x, scoring_method, n), axis=1)
+    df[["w2vec_pred", "cos_pred"]] = df[["view", "to_cart"]].apply(
+        lambda x: paralled_prediction(x, scoring_method, n), axis=1
     )
     return df
+
 
 def get_predictions(
     df: pd.DataFrame,
@@ -55,7 +60,7 @@ def get_predictions(
     scoring_method: Callable,
     p2vec: CombinedProd2Vec,
     cosine_model: CosineModel,
-    task_cpus = 8,
+    task_cpus=8,
 ) -> pd.DataFrame:
     df = np.array_split(df, task_cpus)
     LOCALS = {
@@ -65,8 +70,9 @@ def get_predictions(
         "p2vec": p2vec,
         "cosine_model": cosine_model,
     }
-    sys.modules["executor_pool_storage"] = \
-        types.ModuleType("executor_pool_storage")
+    sys.modules["executor_pool_storage"] = types.ModuleType(
+        "executor_pool_storage"
+    )
     sys.modules["executor_pool_storage"].__dict__.update(LOCALS)
 
     with multiprocessing.Pool(processes=task_cpus) as pool:
@@ -99,7 +105,9 @@ def main(
     )
 
     # Getting top 50 prediction
-    pred_df["top_pred"] = pred_df.apply(lambda x: top50.get_prediction(), axis=1)
+    pred_df["top_pred"] = pred_df.apply(
+        lambda x: top50.get_prediction(), axis=1
+    )
     pred_df = pred_df.reset_index(drop=True)
     pred_df["type"] = "train"
     test_pred_df = test_pred_df.reset_index(drop=True)
