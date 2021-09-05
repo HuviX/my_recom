@@ -1,4 +1,4 @@
-callable: L2R.train.main
+callable: L2R.train_net.main
 kwargs:
   input_data: /home/huvi/recom/data/features_df.pkl
   query_id_col: q_id
@@ -10,6 +10,7 @@ kwargs:
     logdir: logdir/
     layers: [64, 16] # [input_size, 64, 16]
     save_dir: /home/huvi/recom/lambdarank/
+    model_path: /home/huvi/recom/lambdarank/lambda_rank_model.pth
   features_list:
     - avg_w2vec 
     - avg_cosine

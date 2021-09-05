@@ -14,7 +14,8 @@ class QueryDS(Dataset):
         query_id_col: str,
         target_col: str,
         type="train",
-        k: int = 30,  # by default from each sessions get 30 recommendations
+        k: int = 30,
+        **kwargs,  # by default from each sessions get 30 recommendations
     ):
         self.target_col = target_col
         self.features = features

@@ -1,3 +1,38 @@
 callable: L2R.evaluate.main
 kwargs:
-  input_data: 
+  mlflow_experiment_name: Lambda_and_catboost
+  input_data:
+    data: /home/huvi/recom/data/features_df.pkl
+    labels_df: /home/huvi/recom/data/candidates_df.pkl
+  models:
+    catboost:
+      model_path: /home/huvi/recom/catboost_yeti.cbm
+    lambdarank:
+      layers: [64, 16]
+      model_path: /home/huvi/recom/lambdarank/lambda_rank_model.pth
+      features:
+        - avg_w2vec 
+        - avg_cosine
+        - sum_w2vec
+        - sum_cosine
+        - len_of_w2vec
+        - len_of_cos
+        - len_of_pred
+        - mean_ovr
+        - sum_ovr
+        # - intersection_w2vec
+        # - intersection_cosine
+        - mean_score_for_prediction
+        - num_of_cart
+        - num_of_views
+        - is_popular
+        - pred_cart_sim
+        - pred_view_sim
+        - prob_cart
+        - prob_view
+        - max_cart_sim
+        - max_view_sim
+        - cat1_encoded_feature
+        - cat2_encoded_feature
+      query_id_col: q_id
+      target_col: target

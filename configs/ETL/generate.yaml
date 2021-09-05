@@ -1,6 +1,6 @@
-callable: ETL.generate_features.main
+callable: ETL.prob_features.main
 kwargs:
-  candidates_df: /home/huvi/recom/data/candidates_df.pkl
+  exploded_df: /home/huvi/recom/data/exploded_df.pkl
   external_data:
     cart_num: /home/huvi/recom/data/num_of_to_cart.pkl
     view_num: /home/huvi/recom/data/num_of_view.pkl
@@ -13,5 +13,5 @@ kwargs:
     PB_cart: /home/huvi/recom/sparse_data/PB_to_cart.npy
 
   output_data:
-    exploded_df: /home/huvi/recom/data/exploded_df.pkl
-    features_df: /home/huvi/recom/data/features_df.pkl
+    train_data: /home/huvi/recom/data/train_features_df.pkl
+    test_data: /home/huvi/recom/data/test_features_df.pkl

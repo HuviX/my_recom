@@ -4,6 +4,8 @@ from typing import Dict, List, Optional
 from addict import Dict
 from airflow.operators.python import PythonOperator
 import yaml
+import logging
+from pprint import pprint
 
 
 class CustomPythonOperator(PythonOperator):

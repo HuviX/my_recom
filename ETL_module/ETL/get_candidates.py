@@ -14,6 +14,7 @@ from models_pack.models import CombinedProd2Vec, CosineModel, Top
 
 def get_dataset(df: pd.DataFrame, size: int) -> pd.DataFrame:
     df = df.sample(frac=1)
+    print("THIS IS PRINT:", size)
     return df[:size]
 
 
@@ -76,7 +77,7 @@ def get_predictions(
     sys.modules["executor_pool_storage"].__dict__.update(LOCALS)
 
     with multiprocessing.Pool(processes=task_cpus) as pool:
-        res = pool.map(process_batch, range(1))
+        res = pool.map(process_batch, range(task_cpus))
     return pd.concat(res)
 
 
@@ -88,6 +89,7 @@ def main(
     model_paths: Dict[str, str],
     top_n: int,
     output_data: str,
+    task_cpus: int,
     **kwargs,
 ) -> None:
     print("Reading Tables ...")
@@ -99,11 +101,13 @@ def main(
     test_df = get_dataset(test_df, size_of_test)
     top50, p2vec, cos_model = load_models(**model_paths)
     print("Getting predictions ...")
-    pred_df = get_predictions(df, top_n, scoring_method, p2vec, cos_model)
-    test_pred_df = get_predictions(
-        test_df, top_n, scoring_method, p2vec, cos_model
+    print(f"{task_cpus=}")
+    pred_df = get_predictions(
+        df, top_n, scoring_method, p2vec, cos_model, task_cpus
     )
-
+    test_pred_df = get_predictions(
+        test_df, top_n, scoring_method, p2vec, cos_model, task_cpus
+    )
     # Getting top 50 prediction
     pred_df["top_pred"] = pred_df.apply(
         lambda x: top50.get_prediction(), axis=1
@@ -116,5 +120,5 @@ def main(
         lambda x: top50.get_prediction(), axis=1
     )
     print("Saving Tables ...")
-    candidates_df = pd.concat([pred_df, test_pred_df], axis=0)
-    candidates_df.to_pickle(output_data)
+    pred_df.to_pickle(output_data["train_data"])
+    test_pred_df.to_pickle(output_data["test_data"])

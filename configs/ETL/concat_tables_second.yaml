@@ -1,0 +1,6 @@
+callable: ETL.concat_tables.main
+kwargs:
+  input_data:
+    train_data: /home/huvi/recom/data/train_features_df.pkl
+    test_data: /home/huvi/recom/data/test_features_df.pkl
+  output_data: /home/huvi/recom/data/features_df.pkl
