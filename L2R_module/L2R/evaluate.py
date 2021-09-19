@@ -8,10 +8,46 @@ import torch
 from torch.utils.data import DataLoader
 from sklearn.preprocessing import StandardScaler
 
-from models_pack.metrics import map_at_k
+from models_pack.metrics import map_at_k, get_ndcg, get_mrr
 from .LambdaNet import LambdaRank
 from .data import QueryDS
 from .utils import to_float32
+
+
+def get_metrics(
+    predictions: pd.DataFrame,
+    labels_df: pd.DataFrame,
+    top: int = 50
+) -> Dict[str, float]:
+    """mAP, mrr, ndcg
+    """
+    preds_series = (
+        predictions
+        .sort_values(["index", "pred"], ascending=[True, False])
+        .groupby("index")["target"]
+        .agg(list)
+        .apply(lambda x: x[:top])
+    )
+    mrr = preds_series.apply(get_mrr).mean()
+    ndcg = preds_series.apply(get_ndcg).mean()
+
+    preds = (
+        predictions
+        .sort_values(["index", "pred"], ascending=[True, False])
+        .groupby("index")["item_id"]
+        .agg(list)
+        .apply(lambda x: x[:top])
+        .to_frame()
+    )
+    labels_df = labels_df[labels_df["type"] == "test"]
+    new_df = (
+        preds
+        .merge(labels_df.reset_index()[["index", "order"]], on="index")
+        .drop(["index"], axis=1)[["order", "item_id"]]
+    )
+    mAP = map_at_k(new_df, top)
+    
+    return {"map": mAP, "mrr": mrr, "ndcg": ndcg}
 
 
 def load_model_from_checkpoint(
@@ -35,9 +71,7 @@ def load_model_from_checkpoint(
 
 def eval_catboost(
     data: pd.DataFrame,
-    labels_df: pd.DataFrame,
     model_path: str,
-    top: int = 50,
 ):
     model = CatBoost().load_model(model_path)
     features = model.feature_names_
@@ -59,33 +93,13 @@ def eval_catboost(
             "item_id": prediction_item_id,
         }
     )
-    
-    preds = (
-        test_prediction
-        .sort_values(["index", "pred"], ascending=[True, False])
-        .groupby("index")["item_id"]
-        .agg(list)
-        .apply(lambda x: x[:top])
-        .to_frame()
-    )
-    labels_df = labels_df[labels_df["type"] == "test"]
-    new_df = (
-        preds
-        .merge(labels_df.reset_index()[["index", "order"]], on="index")
-        .drop(["index"], axis=1)[["order", "item_id"]]
-    )
-    return {
-        f"map_at_{top}": map_at_k(new_df, top),
-    }
-    # print(f"Catboost map@{top}: {map_at_k(new_df, top)}")
+    return test_prediction
 
 
 def eval_lambda(
     data: pd.DataFrame,
-    labels_df: pd.DataFrame,
     model_params: Dict[str, Any],
     device: torch.device,
-    top: int = 50,
 ):
     input_size = len(model_params["features"])
     lambdarank_structure = [input_size, *model_params["layers"]]
@@ -129,7 +143,7 @@ def eval_lambda(
     preds = []
     with torch.no_grad():
         for _, (data, rel) in enumerate(test_loader):
-            data = data.cuda()
+            data = data.to(device)
             pred = my_net(data)
             preds.append(pred.squeeze(0).cpu().numpy()[:, 0])
     
@@ -137,30 +151,14 @@ def eval_lambda(
         data={
             "index": test["q_id"].values,
             "pred":  [x for pred in preds for x in pred],
-            "item_id": test["prediction"].values.astype(int)
+            "item_id": test["prediction"].values.astype(int),
+            "target": test["target"].values,
         }
     )
-
-    preds = (
-        test_prediction
-        .sort_values(["index", "pred"], ascending=[True, False])
-        .groupby("index")["item_id"]
-        .agg(list)
-        .apply(lambda x: x[:top])
-    )
-    preds = preds.to_frame()
-    labels_df = labels_df[labels_df["type"] == "test"]
-    new_df = (
-        preds
-        .merge(labels_df.reset_index()[["index", "order"]], on="index")
-        .drop(["index"], axis=1)[["order", "item_id"]]
-    )
-    return {
-        f"map_at_{top}": map_at_k(new_df, top),
-    }
+    return test_prediction
 
 
-def log_metrics(
+def _log_metrics(
     metrics: Dict[str, Dict[str, float]]
 ):
     for model in metrics.keys():
@@ -172,10 +170,23 @@ def log_metrics(
                 print(model, metric, value)
 
 
+def log_metrics(
+    metrics_dataframe: str,
+    metrics: Dict[str, Dict[str, float]]
+):
+    metrics_df = pd.read_parquet(metrics_dataframe)
+    for model in metrics.keys():
+        for k, v in metrics[model].items():
+            column = f"{model}_{k}"
+            metrics_df[column] = metrics_df[column].values.tolist().append(v)
+    metrics_df.to_parquet(metrics_dataframe)
+
+
 def main(
     input_data: Dict[str, str],
     models: Dict[str, Any],
     mlflow_experiment_name: str,
+    metrics_dataframe: str,
 ):
     device = (
         torch.device("cuda")
@@ -185,14 +196,15 @@ def main(
     mlflow.set_experiment(mlflow_experiment_name)
     data = pd.read_pickle(input_data["data"])
     labels_df = pd.read_pickle(input_data["labels_df"])
-    metrics_catboost = (
-        eval_catboost(data, labels_df, models["catboost"]["model_path"])
+    prediction_catboost = (
+        eval_catboost(data, models["catboost"]["model_path"])
     )
-    metrics_labmdarank = (
-        eval_lambda(data, labels_df, models["lambdarank"], device)
+    prediction_lambda = (
+        eval_lambda(data, models["lambdarank"], device)
     )
     metrics = {
-        "catboost": metrics_catboost,
-        "lambda_rank": metrics_labmdarank,
+        "catboost": get_metrics(prediction_catboost, labels_df),
+        "lambda": get_metrics(prediction_lambda, labels_df),
     }
-    log_metrics(metrics)
+    log_metrics(metrics_dataframe, metrics)
+

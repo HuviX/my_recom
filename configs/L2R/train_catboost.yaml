@@ -1,15 +1,15 @@
 callable: L2R.train_catboost.main
 kwargs:
-  input_data: /home/huvi/recom/data/features_df.pkl
+  input_data: /home/almokhov/recom/data/features_df.pkl
   catboost_params:
     iterations: 1000
     verbose: true
-    task_type: GPU
+    task_type: CPU
     learning_rate: 0.95
   model_fit_params:
     loss: YetiRank
-    train_dir: /home/huvi/recom/cb_logs/
+    train_dir: /home/almokhov/recom/cb_logs/
     add_params:
       custom_metric: 
         - "MAP:top=10"
-  save_dir: "/home/huvi/recom/catboost_yeti.cbm"
+  save_dir: /home/almokhov/recom/catboost_yeti.cbm

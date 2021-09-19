@@ -1,8 +1,8 @@
 callable: ETL.preprocess.main
 kwargs:
-  input_data: /home/huvi/recom/data/sessions.json
-  test_df_dir: /home/huvi/recom/data/test_df.parquet
-  train_df_dir: /home/huvi/recom/data/processed.parquet
-  sparse_matrices_dir: /home/huvi/recom/sparse_data/
-  data_dir: /home/huvi/recom/data/
-  w2vec_data_dir: /home/huvi/recom/data/w2vec
+  input_data: /home/almokhov/recom/data/sessions.json
+  test_df_dir: /home/almokhov/recom/data/test_df.parquet
+  train_df_dir: /home/almokhov/recom/data/processed.parquet
+  sparse_matrices_dir: /home/almokhov/recom/sparse_data/
+  data_dir: /home/almokhov/recom/data/
+  w2vec_data_dir: /home/almokhov/recom/data/w2vec

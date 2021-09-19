@@ -1,16 +1,16 @@
 callable: ETL.get_candidates.main
 kwargs:
-  train_path: /home/huvi/recom/data/processed.parquet
-  test_path: /home/huvi/recom/data/test_df.parquet
-  size_of_train: 10000
+  train_path: /home/almokhov/recom/data/processed.parquet
+  test_path: /home/almokhov/recom/data/test_df.parquet
+  size_of_train: 30000
   size_of_test: 3000
   model_paths:
-    cart_w2vec: /home/huvi/recom/data/w2vec/weights/cart.model
-    view_w2vec: /home/huvi/recom/data/w2vec/weights/view.model
-    cosine_folder: /home/huvi/recom/sparse_data/
-    top50: /home/huvi/recom/data/top50.pkl
+    cart_w2vec: /home/almokhov/recom/data/w2vec/weights/cart.model
+    view_w2vec: /home/almokhov/recom/data/w2vec/weights/view.model
+    cosine_folder: /home/almokhov/recom/sparse_data/
+    top50: /home/almokhov/recom/data/top50.pkl
   top_n: 50
   task_cpus: 2
   output_data:
-    train_data: /home/huvi/recom/data/candidates_df_train.pkl
-    test_data: /home/huvi/recom/data/candidates_df_test.pkl
+    train_data: /home/almokhov/recom/data/candidates_df_train.pkl
+    test_data: /home/almokhov/recom/data/candidates_df_test.pkl

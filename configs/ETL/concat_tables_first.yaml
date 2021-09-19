@@ -1,6 +1,6 @@
 callable: ETL.concat_tables.main
 kwargs:
   input_data:
-    train_data: /home/huvi/recom/data/candidates_df_train.pkl
-    test_data: /home/huvi/recom/data/candidates_df_test.pkl
-  output_data: /home/huvi/recom/data/candidates_df.pkl
+    train_data: /home/almokhov/recom/data/candidates_df_train.pkl
+    test_data: /home/almokhov/recom/data/candidates_df_test.pkl
+  output_data: /home/almokhov/recom/data/candidates_df.pkl

@@ -1,6 +1,6 @@
 callable: L2R.train_net.main
 kwargs:
-  input_data: /home/huvi/recom/data/features_df.pkl
+  input_data: /home/almokhov/recom/data/features_df.pkl
   query_id_col: q_id
   target_col: target
   model_params:
@@ -9,8 +9,8 @@ kwargs:
     epochs: 10
     logdir: logdir/
     layers: [64, 16] # [input_size, 64, 16]
-    save_dir: /home/huvi/recom/lambdarank/
-    model_path: /home/huvi/recom/lambdarank/lambda_rank_model.pth
+    save_dir: /home/almokhov/recom/lambdarank/
+  model_path: /home/almokhov/recom/lambdarank/lambda_rank_model.pth
   features_list:
     - avg_w2vec 
     - avg_cosine

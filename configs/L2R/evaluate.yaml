@@ -1,15 +1,17 @@
+
 callable: L2R.evaluate.main
 kwargs:
   mlflow_experiment_name: Lambda_and_catboost
+  metrics_dataframe: /home/almokhov/recom/metrics.parquet
   input_data:
-    data: /home/huvi/recom/data/features_df.pkl
-    labels_df: /home/huvi/recom/data/candidates_df.pkl
+    data: /home/almokhov/recom/data/features_df.pkl
+    labels_df: /home/almokhov/recom/data/candidates_df.pkl
   models:
     catboost:
-      model_path: /home/huvi/recom/catboost_yeti.cbm
+      model_path: /home/almokhov/recom/catboost_yeti.cbm
     lambdarank:
       layers: [64, 16]
-      model_path: /home/huvi/recom/lambdarank/lambda_rank_model.pth
+      model_path: /home/almokhov/recom/lambdarank/lambda_rank_model.pth
       features:
         - avg_w2vec 
         - avg_cosine

@@ -11,7 +11,7 @@ import torch.nn.functional as F
 from numpy import log2
 from numpy.lib.npyio import load
 from sklearn.metrics import average_precision_score
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 
 
@@ -211,7 +211,6 @@ def eval_cross_entropy_loss(model, loader, device, sigma=1.0):
             y_pred = model(X_tensor)
             y_pred_diff = y_pred - y_pred.t()
 
-            # logsigmoid(x) = log(1 / (1 + exp(-x))) equivalent to log(1 + exp(-x))
             C = 0.5 * (1 - Sij) * sigma * y_pred_diff - F.logsigmoid(
                 -sigma * y_pred_diff
             )

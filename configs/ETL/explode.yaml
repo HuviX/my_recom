@@ -1,18 +1,18 @@
 callable: ETL.explode.main
 kwargs:
-  candidates_df: /home/huvi/recom/data/candidates_df.pkl
+  candidates_df: /home/almokhov/recom/data/candidates_df.pkl
   external_data:
-    cart_num: /home/huvi/recom/data/num_of_to_cart.pkl
-    view_num: /home/huvi/recom/data/num_of_view.pkl
-    categories: /home/huvi/recom/data/categories.pkl
-    sparse_similarities_view: /home/huvi/recom/sparse_data/similarities_view.npz
-    sparse_similarities_to_cart: /home/huvi/recom/sparse_data/similarities_to_cart.npz
-    PAB_view: /home/huvi/recom/sparse_data/PAB_view.npz
-    PAB_cart: /home/huvi/recom/sparse_data/PAB_to_cart.npz
-    PB_view: /home/huvi/recom/sparse_data/PB_view.npy
-    PB_cart: /home/huvi/recom/sparse_data/PB_to_cart.npy
+    cart_num: /home/almokhov/recom/data/num_of_to_cart.pkl
+    view_num: /home/almokhov/recom/data/num_of_view.pkl
+    categories: /home/almokhov/recom/data/categories.pkl
+    sparse_similarities_view: /home/almokhov/recom/sparse_data/similarities_view.npz
+    sparse_similarities_to_cart: /home/almokhov/recom/sparse_data/similarities_to_cart.npz
+    PAB_view: /home/almokhov/recom/sparse_data/PAB_view.npz
+    PAB_cart: /home/almokhov/recom/sparse_data/PAB_to_cart.npz
+    PB_view: /home/almokhov/recom/sparse_data/PB_view.npy
+    PB_cart: /home/almokhov/recom/sparse_data/PB_to_cart.npy
 
   output_data:
-    train_data: /home/huvi/recom/data/train_features_df.pkl
-    test_data: /home/huvi/recom/data/test_features_df.pkl
-    exploded_df: /home/huvi/recom/data/exploded_df.pkl
+    train_data: /home/almokhov/recom/data/train_features_df.pkl
+    test_data: /home/almokhov/recom/data/test_features_df.pkl
+    exploded_df: /home/almokhov/recom/data/exploded_df.pkl

@@ -2,7 +2,7 @@ callable: w2vec.train.main
 kwargs:
   n_epochs: 50
   min_count: 5
-  model_dir: /home/huvi/recom/data/w2vec/weights
+  model_dir: /home/almokhov/recom/data/w2vec/weights
   data:
-    cart: /home/huvi/recom/data/w2vec/to_cart_df.pkl
-    views: /home/huvi/recom/data/w2vec/view_df.pkl
+    cart: /home/almokhov/recom/data/w2vec/to_cart_df.pkl
+    views: /home/almokhov/recom/data/w2vec/view_df.pkl
