@@ -35,8 +35,12 @@ def ndcg(actual, predicted, k=10):
     den = np.sum(1 / log2(i + 2) for i in range(k))
     return num / den
 
+def get_ndcg(preds):
+    true = sorted(preds, reverse=True)
+    return ndcg(true, preds)
 
-def mean_ndcg(df: pd.DataFrame, k=10):
-    true, predictions = df.values.T
-    ndcg_list = [ndcg(act, pred, k) for act, pred in zip(true, predictions)]
-    return np.mean(ndcg_list)
+def get_mrr(preds):
+    preds = np.array(preds)
+    idx = np.where(preds == 1)[0]
+    size = idx.size
+    return 1 / (idx[0] + 1) if size > 0 else 0.
