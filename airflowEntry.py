@@ -6,7 +6,7 @@ import yaml
 
 
 if __name__ == "__main__":
-    print("DEPRECATED... remove in future")
+    print("ONLY FOR TEST")
     path = sys.argv[1]
     with open(path, "r") as f:
         cfg = Dict(yaml.safe_load(f))
