@@ -4,12 +4,14 @@ kwargs:
   catboost_params:
     iterations: 1000
     verbose: true
-    task_type: CPU
-    learning_rate: 0.95
+    task_type: GPU
+    learning_rate: 0.5
   model_fit_params:
-    loss: YetiRank
+    loss: YetiRankPairwise
     train_dir: /home/almokhov/recom/cb_logs/
     add_params:
       custom_metric: 
         - "MAP:top=10"
+        - "NDCG:hints=skip_train~false"
+        - "PFound:hints=skip_train~false"
   save_dir: /home/almokhov/recom/catboost_yeti.cbm

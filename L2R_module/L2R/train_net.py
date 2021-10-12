@@ -98,7 +98,7 @@ def main(
             optimizer,
             ideal_dcg,
             epoch,
-            scheduler,  # XXX: refactor this
+            scheduler, # TODO: refactor this
         )
         validation_step(my_net, test_loader, writer, device, epoch)
 
