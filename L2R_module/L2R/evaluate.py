@@ -175,11 +175,16 @@ def log_metrics(
     metrics: Dict[str, Dict[str, float]]
 ):
     metrics_df = pd.read_parquet(metrics_dataframe)
+    columns = metrics_df.columns
+    data = {}
     for model in metrics.keys():
         for k, v in metrics[model].items():
             column = f"{model}_{k}"
-            metrics_df[column] = metrics_df[column].values.tolist().append(v)
-    metrics_df.to_parquet(metrics_dataframe)
+            data[column] = [v]
+    metrics = pd.DataFrame(data=data)[columns]
+    print(metrics)
+    metrics = pd.concat([metrics_df, metrics])
+    metrics.to_parquet(metrics_dataframe)
 
 
 def main(
