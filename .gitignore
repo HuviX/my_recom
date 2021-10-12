@@ -10,3 +10,4 @@ w2vec/train_df
 *.parquet
 *.model
 *.json
+.ipy*
