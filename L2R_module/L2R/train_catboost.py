@@ -1,4 +1,5 @@
 from typing import Dict, Any, Optional
+import os
 
 from catboost import Pool, CatBoost
 import pandas as pd
@@ -27,7 +28,9 @@ def main(
     catboost_params: Dict[str, Any],
     model_fit_params: Dict[str, Any],
     save_dir: str,
+    **kwargs,
 ):
+    os.environ["CUDA_VISIBLE_DEVICES"] = kwargs["device"]
     df = pd.read_pickle(input_data)
     train = df[
         (df.type == 'train')

@@ -1,5 +1,6 @@
 from typing import List, Any, Dict
 
+import os
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
@@ -22,6 +23,7 @@ def main(
     model_path: str,
     **kwargs,
 ):
+    os.environ["CUDA_VISIBLE_DEVICES"] = kwargs["device"]
     data = pd.read_pickle(input_data)
     data = data.rename({"index": query_id_col}, axis=1)
     train = data[data["type"] == "train"]

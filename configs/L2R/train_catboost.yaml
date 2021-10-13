@@ -1,6 +1,7 @@
 callable: L2R.train_catboost.main
 kwargs:
   input_data: /home/almokhov/recom/data/features_df.pkl
+  device: '0'
   catboost_params:
     iterations: 1000
     verbose: true

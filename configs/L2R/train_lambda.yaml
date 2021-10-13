@@ -3,6 +3,7 @@ kwargs:
   input_data: /home/almokhov/recom/data/features_df.pkl
   query_id_col: q_id
   target_col: target
+  device: '0'
   model_params:
     learning_rate: 0.0001
     batch_size: 64
