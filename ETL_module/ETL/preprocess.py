@@ -60,7 +60,6 @@ def get_sparse_matrix(
     this_df: pd.DataFrame,
 ) -> sp.csr_matrix:
     shape = (session_id_max + 1, item_id_max + 1)
-    # из df возьмем только view
     condition = this_df["action_type"] == type_of_action
     session_matrix = sp.csr_matrix(
         (
